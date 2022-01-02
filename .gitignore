@@ -1,1 +1,4 @@
-sshd
+ssh-server
+ssh-client
+config/*
+obj/*
