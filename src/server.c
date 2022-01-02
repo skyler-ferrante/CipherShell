@@ -1,3 +1,6 @@
+// Using samplesshd as a reference 
+// https://github.com/substack/libssh/blob/master/examples/samplesshd.c 
+
 #include <libssh/libssh.h>
 #include <libssh/server.h>
 #include <stdlib.h>
@@ -38,7 +41,6 @@ int main(int argc, char** argv){
 	sshbind = ssh_bind_new();
 	session = ssh_new();
 
-	//ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_DSAKEY, KEYS_FOLDER "ssh_host_dsa_key");
 	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_RSAKEY, KEYS_FOLDER "ssh_host_rsa_key");	
 
 	if( ssh_bind_listen(sshbind) < 0 ){
