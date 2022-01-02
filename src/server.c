@@ -25,7 +25,7 @@ int main(int argc, char** argv){
 		commands_filename = argv[1];
 	}else{
 		fprintf(stderr, "Usage: %s commands_filename\n", argv[0]);
-		fprintf(stderr, "Usage: %s #If commands_filename in " CONFIG_DIR, argv[0]);
+		fprintf(stderr, "Usage: %s #If commands_filename in " CONFIG_DIR "\n", argv[0]);
 		exit(-1);
 	}
 	
