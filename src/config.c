@@ -16,6 +16,13 @@ void add_node(struct node* tail, char* line){
 	tail->next = NULL;
 }
 
+void free_nodes(struct node* head){
+	for(struct node* c = head; c;){
+		c = c->next;
+		free(c);
+	}
+}
+
 struct node* get_lines(char* filename){
 	FILE* file;
 

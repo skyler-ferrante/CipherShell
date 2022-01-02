@@ -46,7 +46,7 @@ int main(int argc, char** argv){
 		ibuffer[nbytes] = '\0';
 
 		if( nbytes > 0){
-			printf("(COMMAND): %s : ", ibuffer);
+			printf("(COMMAND) : %s : ", ibuffer);
 			
 			int i;
 			switch(ibuffer[0]){
@@ -57,7 +57,7 @@ int main(int argc, char** argv){
 					FILE *fp = fopen(filename, "r");
 					
 					if( !fp ){
-						printf("Failed to read: %s\n", ibuffer+1);
+						printf("Failed to read : %s\n", ibuffer+1);
 						break;
 					}
 				

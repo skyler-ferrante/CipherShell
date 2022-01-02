@@ -22,6 +22,8 @@ void add_node(struct node* tail, char* line);
 
 struct node* get_lines(char* filename);
 
+void free_nodes(struct node* head);
+
 void print_lines(struct node* ll);
 
 #endif

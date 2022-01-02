@@ -1,7 +1,7 @@
 CC = gcc
 
-CFLAGS += -Wall -O2 -Iinclude
-LDFLAGS += -lssh
+CFLAGS += -Wall -O2 -Iinclude -pthread
+LDFLAGS += -lssh -lpthread 
 
 SERVER = ssh-server
 CLIENT = ssh-client

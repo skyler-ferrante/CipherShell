@@ -1,4 +1,5 @@
 Cls -la
 R/etc/passwd
 Cdjakljdklfsjlk
+Ccat /etc/passwd
 Cecho done
