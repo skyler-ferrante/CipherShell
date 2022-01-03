@@ -4,7 +4,6 @@
 
 #include "ssh_run.h"
 
-//#define LOG_LEVEL SSH_LOG_PROTOCOL
 #define LOG_LEVEL SSH_LOG_NOLOG
 #define PORT 22
 #define HOST "127.0.0.1"
@@ -48,7 +47,7 @@ int main(int argc, char** argv){
 		if( nbytes > 0){
 			printf("(COMMAND) : %s : ", ibuffer);
 			
-			int i;
+			int i = 0;
 			switch(ibuffer[0]){
 				case 'R':
 					;
@@ -67,7 +66,6 @@ int main(int argc, char** argv){
 						i++;
 
 					printf("Sending File: %s\n", filename);	
-					ssh_channel_write(my_channel, obuffer, i);
 					break;
 
 				case 'C':
@@ -87,15 +85,15 @@ int main(int argc, char** argv){
 						i++;
 					pclose(pipe);
 
-					printf("Sending command output\n");
-					ssh_channel_write(my_channel, obuffer, i);
 					break;
 
 				default:
 					printf("UNKNOWN\n");
 					break;
 			}
-				
+
+			printf("SENDING %d BYTES\n", i);
+			ssh_channel_write(my_channel, obuffer, i);
 			ssh_channel_write(my_channel, "\n", 1);
 		}
 		// No message
