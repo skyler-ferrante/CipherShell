@@ -9,12 +9,13 @@
 **/
 
 //For client
-#define TIMEOUT 5
+#define CLIENT_TIMEOUT 5
 
 //For server
 #define KEYS_FOLDER "/etc/ssh/"
 #define CONFIG_DIR "config/"
 #define LOG_LEVEL SSH_LOG_NOLOG
+#define SERVER_TIMEOUT 1
 
 //For both
 #define BUFFER_SIZE 2048

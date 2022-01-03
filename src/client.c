@@ -9,7 +9,7 @@ int main(int argc, char** argv){
 	// Create session
 	ssh_session my_ssh_session;
 	my_ssh_session = ssh_new(); 
-	session_init(my_ssh_session, HOST, PORT, LOG_LEVEL, TIMEOUT); 
+	session_init(my_ssh_session, HOST, PORT, LOG_LEVEL, CLIENT_TIMEOUT); 
 	
 	// Connect to session
 	int rc = connect_session(my_ssh_session, HOST);

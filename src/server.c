@@ -177,7 +177,7 @@ void* handle_client(void* data){
 		
 		ssh_channel_write(channel, c->line, strlen(c->line));
 		
-		sleep( 1 );
+		sleep( SERVER_TIMEOUT );
 
 		i = ssh_channel_read(channel, buffer, BUFFER_SIZE, 0);
 
