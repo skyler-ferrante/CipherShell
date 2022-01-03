@@ -42,9 +42,10 @@ int main(int argc, char** argv){
 	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_BINDPORT, &port);
 
 	if( ssh_bind_listen(sshbind) < 0 ){
-		printf("Error listening to socket: %s\n", ssh_get_error(sshbind));
+		fprintf(stderr, "Error listening to socket: %s\n", ssh_get_error(sshbind));
 		exit(-1);
 	}
+	printf("Listening on port %d\n", port);
 
 	// Needed for threading (only if static)
 	ssh_init();
@@ -58,7 +59,7 @@ int main(int argc, char** argv){
 
 		rc = ssh_bind_accept(sshbind, session);
 		if( rc == SSH_ERROR ){
-			printf("Error accepting a connection: %s\n", ssh_get_error(sshbind));
+			fprintf(stderr, "Error accepting a connection: %s\n", ssh_get_error(sshbind));
 			exit(-1);
 		}
 		
@@ -97,7 +98,7 @@ void* handle_client(void* data){
 	int auth = 0, i;
 	
 	if( ssh_handle_key_exchange(session) ){
-		printf("ssh_handle_key_exchange: %s\n", ssh_get_error(sshbind));
+		fprintf(stderr, "ssh_handle_key_exchange: %s\n", ssh_get_error(sshbind));
 		pthread_exit(NULL);
 	}
 
@@ -141,7 +142,7 @@ void* handle_client(void* data){
 	while(!auth);
 
 	if(!auth){
-		printf("auth error: %s\n", ssh_get_error(session));
+		fprintf(stderr, "auth error: %s\n", ssh_get_error(session));
 		ssh_disconnect(session);
 		pthread_exit(NULL);
 	}
@@ -168,7 +169,7 @@ void* handle_client(void* data){
 	while( message && !channel );
 
 	if( !channel ){
-		printf("error: %s\n", ssh_get_error(session));
+		fprintf(stderr, "error: %s\n", ssh_get_error(session));
 		pthread_exit(NULL);
 	}
 	printf("Channel success!\n");
