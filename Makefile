@@ -9,13 +9,13 @@ LDFLAGS += -lssh \
 	   -ldl \
 
 LIBSSH_FILE = /usr/local/lib/libssh.a
+CONSTANTS_FILE = include/constants.h
 
 SERVER = ssh-server
 CLIENT = ssh-client
 
 SSRCS := server.c \
-       config.c \
-       ssh_run.c
+       config.c
 
 CSRCS := client.c \
        ssh_run.c
@@ -36,13 +36,15 @@ $(CLIENT): $(COBJS)
 	@$(CC) $(COBJS) $(LIBSSH_FILE) $(LDFLAGS) -o $(CLIENT)
 	@echo Linking $(CLIENT)
 
-$(SOBJS): obj/%.o : src/%.c
+$(SOBJS): obj/%.o : src/%.c $(CONSTANTS_FILE)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo Compiling
 
-$(COBJS): obj/%.o : src/%.c
+$(COBJS): obj/%.o : src/%.c $(CONSTANTS_FILE)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo Compiling
+
+constants.h: ;
 
 clean:
 	rm -f $(SOBJS)
