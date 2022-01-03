@@ -15,7 +15,7 @@
 #define KEYS_FOLDER "/etc/ssh/"
 #define CONFIG_DIR "config/"
 #define LOG_LEVEL SSH_LOG_NOLOG
-#define SERVER_TIMEOUT 1
+#define SERVER_TIMEOUT 2
 
 //For both
 #define BUFFER_SIZE 2048
