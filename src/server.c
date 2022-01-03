@@ -25,6 +25,7 @@ int main(int argc, char** argv){
 	int rc;
 	char* commands_filename;
 	struct node* commands;
+	int port = PORT;
 
 	if(argc == 1){
 		commands_filename = CONFIG_DIR "commands";
@@ -38,6 +39,7 @@ int main(int argc, char** argv){
 	
 	sshbind = ssh_bind_new();
 	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_RSAKEY, KEYS_FOLDER "ssh_host_rsa_key");	
+	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_BINDPORT, &port);
 
 	if( ssh_bind_listen(sshbind) < 0 ){
 		printf("Error listening to socket: %s\n", ssh_get_error(sshbind));
@@ -53,8 +55,8 @@ int main(int argc, char** argv){
 	//Main server loop
 	while( 1 ){
 		session = ssh_new();
-		rc = ssh_bind_accept(sshbind, session);	
-		
+
+		rc = ssh_bind_accept(sshbind, session);
 		if( rc == SSH_ERROR ){
 			printf("Error accepting a connection: %s\n", ssh_get_error(sshbind));
 			exit(-1);
