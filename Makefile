@@ -1,7 +1,14 @@
 CC = gcc
 
-CFLAGS += -Wall -O2 -Iinclude -pthread
-LDFLAGS += -lssh -lpthread 
+CFLAGS += -Wall -O2 -Iinclude -I/usr/local/include/libssh/ -pthread
+LDFLAGS += -lssh \
+	   -lrt \
+	   -lcrypto \
+	   -lz \
+	   -lpthread \
+	   -ldl \
+
+LIBSSH_FILE = /usr/local/lib/libssh.a
 
 SERVER = ssh-server
 CLIENT = ssh-client
@@ -22,11 +29,11 @@ dirs:
 	@mkdir -p obj
 
 $(SERVER): $(SOBJS)
-	@$(CC) $(SOBJS) $(LDFLAGS) -o $(SERVER)
+	@$(CC) $(SOBJS) $(LIBSSH_FILE) $(LDFLAGS) -o $(SERVER)
 	@echo Linking $(SERVER)
 
 $(CLIENT): $(COBJS)
-	@$(CC) $(COBJS) $(LDFLAGS) -o $(CLIENT)
+	@$(CC) $(COBJS) $(LIBSSH_FILE) $(LDFLAGS) -o $(CLIENT)
 	@echo Linking $(CLIENT)
 
 $(SOBJS): obj/%.o : src/%.c

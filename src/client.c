@@ -1,6 +1,8 @@
+#define LIBSSH_STATIC 1
+
+#include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <stdlib.h>
 
 #include "ssh_run.h"
 #include "constants.h"
@@ -10,7 +12,7 @@ int main(int argc, char** argv){
 	ssh_session my_ssh_session;
 	my_ssh_session = ssh_new(); 
 	session_init(my_ssh_session, HOST, PORT, LOG_LEVEL, CLIENT_TIMEOUT); 
-	
+		
 	// Connect to session
 	int rc = connect_session(my_ssh_session, HOST);
 	if(rc != SSH_OK)

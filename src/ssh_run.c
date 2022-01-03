@@ -1,6 +1,6 @@
-#include "ssh_run.h"
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include "ssh_run.h"
 
 // Function comments are in .h file
 // (Sorry!)

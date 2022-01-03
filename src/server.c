@@ -1,10 +1,10 @@
 // Using samplesshd as a reference 
 // https://github.com/substack/libssh/blob/master/examples/samplesshd.c 
 
-#include <libssh/libssh.h>
-#include <libssh/server.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <libssh/libssh.h>
+#include <libssh/server.h>
 #include <pthread.h>
 
 #include "config.h"

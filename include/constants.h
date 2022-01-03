@@ -23,4 +23,6 @@
 #define HOST "127.0.0.1"
 #define USERNAME "bob"
 
+#define LIBSSH_STATIC 1
+
 #endif
