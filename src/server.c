@@ -7,12 +7,8 @@
 #include <stdio.h>
 #include <pthread.h>
 
-
 #include "config.h"
-
-#define MSG_BUF_SIZE 2048
-#define KEYS_FOLDER "/etc/ssh/"
-#define CONFIG_DIR "config/"
+#include "constants.h"
 
 struct handle{
 	ssh_bind sshbind;
@@ -95,7 +91,7 @@ void* handle_client(void* data){
 	ssh_channel channel = 0;
 	ssh_message message;
 
-	char buffer[MSG_BUF_SIZE];
+	char buffer[BUFFER_SIZE];
 	int auth = 0, i;
 	
 	if( ssh_handle_key_exchange(session) ){
@@ -183,7 +179,7 @@ void* handle_client(void* data){
 		
 		sleep( 1 );
 
-		i = ssh_channel_read(channel, buffer, MSG_BUF_SIZE, 0);
+		i = ssh_channel_read(channel, buffer, BUFFER_SIZE, 0);
 
 		if( i>0 ){
 			if( write(1, buffer, i) < 0){

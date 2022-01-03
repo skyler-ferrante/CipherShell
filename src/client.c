@@ -3,12 +3,7 @@
 #include <stdlib.h>
 
 #include "ssh_run.h"
-
-#define LOG_LEVEL SSH_LOG_NOLOG
-#define PORT 22
-#define HOST "127.0.0.1"
-#define USERNAME "bob"
-#define TIMEOUT 5
+#include "constants.h"
 
 int main(int argc, char** argv){
 	// Create session
