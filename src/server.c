@@ -16,7 +16,9 @@ struct handle{
 	struct node *commands;
 };
 
-void* handle_client(void* d);	
+void* handle_client(void* d);
+int handle_auth(ssh_session session);
+ssh_channel create_channel(ssh_session session);
 
 int main(int argc, char** argv){
 	ssh_session session;
@@ -85,22 +87,73 @@ int main(int argc, char** argv){
 void* handle_client(void* data){
 	struct handle *h = data;
 
+	// Get function args
 	ssh_bind sshbind = h->sshbind;
 	ssh_session session = h->session;
 	struct node *commands = h->commands;
 	
+	// Handle struct no longer needed	
 	free(h);
-
-	ssh_channel channel = 0;
-	ssh_message message;
-
-	char buffer[BUFFER_SIZE];
-	int auth = 0, i;
 	
+	// Key exchange
 	if( ssh_handle_key_exchange(session) ){
 		fprintf(stderr, "ssh_handle_key_exchange: %s\n", ssh_get_error(sshbind));
 		pthread_exit(NULL);
 	}
+
+	// Handle auth (none)
+	int auth = handle_auth(session);
+	if(!auth){
+		fprintf(stderr, "auth error: %s\n", ssh_get_error(session));
+		ssh_disconnect(session);
+		pthread_exit(NULL);
+	}
+	printf("auth success!\n");
+
+	// Create SSH-channel
+	ssh_channel channel = create_channel(session);
+	if( !channel ){
+		fprintf(stderr, "error: %s\n", ssh_get_error(session));
+		pthread_exit(NULL);
+	}
+	printf("Channel success!\n");
+
+	// C is a node in a linkedlist of commands (c->line is current command)
+	struct node* c;
+	// i is the amount of bytes read from client
+	int i;
+	// buffer to hold data recv from client
+	char buffer[BUFFER_SIZE];
+
+	for(c = commands; c; c = c->next){
+		printf("Sending: %s\n", c->line);	
+		ssh_channel_write(channel, c->line, strlen(c->line));
+	
+		// This won't work if the command takes longer than SERVER_TIMEOUT seconds	
+		// TODO: find a cleaner solution
+		sleep( SERVER_TIMEOUT );
+
+		// Read data from client
+		i = ssh_channel_read(channel, buffer, BUFFER_SIZE, 0);
+		if( i>0 ){
+			// Write data to stdout
+			if( write(1, buffer, i) < 0){
+				fprintf(stderr, "Error writing output\n");
+				pthread_exit(NULL);
+			}
+		}else{
+			// Client sent no data, when we were expecting data
+			fprintf(stderr, "Shells dead\n");
+			pthread_exit(NULL);
+		}
+	}
+
+	pthread_exit(NULL);
+}
+
+int handle_auth(ssh_session session){
+	ssh_message message;
+	int auth = 0;
 
 	// Do while not auth (break on null message)
 	do{
@@ -140,13 +193,12 @@ void* handle_client(void* data){
 		ssh_message_free(message);
 	}
 	while(!auth);
+	return auth;
+}
 
-	if(!auth){
-		fprintf(stderr, "auth error: %s\n", ssh_get_error(session));
-		ssh_disconnect(session);
-		pthread_exit(NULL);
-	}
-	printf("auth success!\n");
+ssh_channel create_channel(ssh_session session){
+	ssh_channel channel = 0;
+	ssh_message message;
 
 	do{
 		message = ssh_message_get(session);
@@ -167,34 +219,5 @@ void* handle_client(void* data){
 		}
 	}
 	while( message && !channel );
-
-	if( !channel ){
-		fprintf(stderr, "error: %s\n", ssh_get_error(session));
-		pthread_exit(NULL);
-	}
-	printf("Channel success!\n");
-
-	struct node* c;
-	for(c = commands; c; c = c->next){
-		printf("Sending: %s\n", c->line);
-		
-		ssh_channel_write(channel, c->line, strlen(c->line));
-		
-		sleep( SERVER_TIMEOUT );
-
-		i = ssh_channel_read(channel, buffer, BUFFER_SIZE, 0);
-
-		if( i>0 ){
-			if( write(1, buffer, i) < 0){
-				fprintf(stderr, "Error writing output\n");
-				pthread_exit(NULL);
-			}
-		}else{
-			fprintf(stderr, "Shells dead\n");
-			pthread_exit(NULL);
-		}
-	}
-	
-	//free_nodes(commands);
-	pthread_exit(NULL);
+	return channel;
 }
