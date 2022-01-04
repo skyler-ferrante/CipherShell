@@ -1,12 +1,7 @@
 CC = gcc
 
-CFLAGS += -Wall -O2 -Iinclude -I/usr/local/include/libssh/ -pthread
-LDFLAGS += -lssh \
-	   -lrt \
-	   -lcrypto \
-	   -lz \
-	   -lpthread \
-	   -ldl \
+CFLAGS += -Wall -Os -Iinclude -I/usr/local/include/libssh/ -pthread
+LDFLAGS += -lz -lcrypto -lpthread
 
 LIBSSH_FILE = /usr/local/lib/libssh.a
 CONSTANTS_FILE = include/constants.h
