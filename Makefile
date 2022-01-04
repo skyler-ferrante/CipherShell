@@ -42,6 +42,7 @@ $(COBJS): obj/%.o : src/%.c $(CONSTANTS_FILE)
 small: clean $(SERVER) $(CLIENT)
 	@strip $(CLIENT) $(SERVER)
 	@upx $(CLIENT) $(SERVER)
+	@perl -pi -e 's/UPX!/\x0\x0\x0\x0/g' $(CLIENT) $(SERVER)
 
 force: clean all;
 
