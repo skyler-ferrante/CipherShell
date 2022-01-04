@@ -1,6 +1,11 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+// Documentation says to do this
+// Not sure why it's neccessary
+// Seems to work fine without it
+#define LIBSSH_STATIC 1
+
 /**
  * Constants.h
  *
@@ -22,7 +27,5 @@
 #define PORT 22
 #define HOST "127.0.0.1"
 #define USERNAME "bob"
-
-#define LIBSSH_STATIC 1
 
 #endif
