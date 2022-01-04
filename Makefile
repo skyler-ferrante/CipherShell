@@ -41,6 +41,8 @@ $(COBJS): obj/%.o : src/%.c $(CONSTANTS_FILE)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo Compiling
 
+force: clean all;
+
 constants.h: ;
 
 clean:
