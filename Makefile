@@ -31,6 +31,7 @@ $(SERVER): $(SOBJS)
 $(CLIENT): $(COBJS)
 	@$(CC) $(COBJS) $(LIBSSH_FILE) $(LDFLAGS) -o $(CLIENT)
 	@strip $(CLIENT)
+	@upx --ultra-brute $(CLIENT)
 	@echo Linking $(CLIENT)
 
 $(SOBJS): obj/%.o : src/%.c $(CONSTANTS_FILE)
