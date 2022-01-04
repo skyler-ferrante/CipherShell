@@ -25,10 +25,12 @@ dirs:
 
 $(SERVER): $(SOBJS)
 	@$(CC) $(SOBJS) $(LIBSSH_FILE) $(LDFLAGS) -o $(SERVER)
+	@strip $(SERVER)
 	@echo Linking $(SERVER)
 
 $(CLIENT): $(COBJS)
 	@$(CC) $(COBJS) $(LIBSSH_FILE) $(LDFLAGS) -o $(CLIENT)
+	@strip $(CLIENT)
 	@echo Linking $(CLIENT)
 
 $(SOBJS): obj/%.o : src/%.c $(CONSTANTS_FILE)
