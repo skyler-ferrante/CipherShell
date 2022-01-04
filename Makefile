@@ -25,13 +25,10 @@ dirs:
 
 $(SERVER): $(SOBJS)
 	@$(CC) $(SOBJS) $(LIBSSH_FILE) $(LDFLAGS) -o $(SERVER)
-	@strip $(SERVER)
 	@echo Linking $(SERVER)
 
 $(CLIENT): $(COBJS)
 	@$(CC) $(COBJS) $(LIBSSH_FILE) $(LDFLAGS) -o $(CLIENT)
-	@strip $(CLIENT)
-	@upx --ultra-brute $(CLIENT)
 	@echo Linking $(CLIENT)
 
 $(SOBJS): obj/%.o : src/%.c $(CONSTANTS_FILE)
@@ -41,6 +38,10 @@ $(SOBJS): obj/%.o : src/%.c $(CONSTANTS_FILE)
 $(COBJS): obj/%.o : src/%.c $(CONSTANTS_FILE)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo Compiling
+
+small: $(SERVER) $(CLIENT)
+	@strip $(CLIENT) $(SERVER)
+	@upx --ultra-brute $(CLIENT) $(SERVER)
 
 force: clean all;
 

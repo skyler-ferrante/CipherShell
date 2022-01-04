@@ -16,6 +16,7 @@ ssh-server can handle multiple connections at once
 ## Build Reverse-SSH-Shell:
   ```
   make
+  make small #Strip and UPX pack 
   ```
 
 ## Start server:
