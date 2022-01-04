@@ -39,9 +39,9 @@ $(COBJS): obj/%.o : src/%.c $(CONSTANTS_FILE)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo Compiling
 
-small: $(SERVER) $(CLIENT)
+small: clean $(SERVER) $(CLIENT)
 	@strip $(CLIENT) $(SERVER)
-	@upx --ultra-brute $(CLIENT) $(SERVER)
+	@upx $(CLIENT) $(SERVER)
 
 force: clean all;
 
