@@ -7,6 +7,7 @@
 #include <libssh/server.h>
 #include <pthread.h>
 
+#include "ssh_methods.h"
 #include "config.h"
 #include "constants.h"
 
@@ -16,9 +17,8 @@ struct handle{
 	struct node *commands;
 };
 
+// Handle creating connection to client, and sending commands.
 void* handle_client(void* d);
-int handle_auth(ssh_session session);
-ssh_channel create_channel(ssh_session session);
 
 int main(int argc, char** argv){
 	ssh_session session;
@@ -102,7 +102,7 @@ void* handle_client(void* data){
 	}
 
 	// Handle auth (none)
-	int auth = handle_auth(session);
+	int auth = handle_auth_server(session);
 	if(!auth){
 		fprintf(stderr, "auth error: %s\n", ssh_get_error(session));
 		ssh_disconnect(session);
@@ -111,7 +111,7 @@ void* handle_client(void* data){
 	printf("auth success!\n");
 
 	// Create SSH-channel
-	ssh_channel channel = create_channel(session);
+	ssh_channel channel = create_channel_server(session);
 	if( !channel ){
 		fprintf(stderr, "error: %s\n", ssh_get_error(session));
 		pthread_exit(NULL);
@@ -149,75 +149,4 @@ void* handle_client(void* data){
 	}
 
 	pthread_exit(NULL);
-}
-
-int handle_auth(ssh_session session){
-	ssh_message message;
-	int auth = 0;
-
-	// Do while not auth (break on null message)
-	do{
-		message = ssh_message_get(session);
-		if(!message)
-			break;
-		
-		switch( ssh_message_type(message) ){
-			case SSH_REQUEST_AUTH:
-				switch( ssh_message_subtype(message) ){
-					// Not used right now
-					// Could be used to force a password
-					case SSH_AUTH_METHOD_PASSWORD:
-						printf("User %s wants to auth with password %s\n",
-							ssh_message_auth_user(message),
-							ssh_message_auth_password(message));
-
-						auth = 1;
-						ssh_message_auth_reply_success(message, 0);
-						break;
-					
-					case SSH_AUTH_METHOD_NONE:
-						printf("No auth\n");
-						ssh_message_auth_reply_success(message, 0);
-						auth = 1;
-						//ssh_message_auth_set_methods(message, SSH_AUTH_METHOD_PASSWORD);
-						//ssh_message_reply_default(message);
-						break;
-				}
-				break;
-			
-			default:
-				ssh_message_reply_default(message);
-				break;
-		}
-		
-		ssh_message_free(message);
-	}
-	while(!auth);
-	return auth;
-}
-
-ssh_channel create_channel(ssh_session session){
-	ssh_channel channel = 0;
-	ssh_message message;
-
-	do{
-		message = ssh_message_get(session);
-		
-		if(message){
-			switch( ssh_message_type(message) ){	
-				case SSH_REQUEST_CHANNEL_OPEN:
-					if( ssh_message_subtype(message) == SSH_CHANNEL_SESSION ){
-						channel=ssh_message_channel_request_open_reply_accept(message);
-						break;
-					}
-				
-				default:
-					ssh_message_reply_default(message);
-
-			}
-			ssh_message_free(message);
-		}
-	}
-	while( message && !channel );
-	return channel;
 }

@@ -10,10 +10,11 @@ SERVER = ssh-server
 CLIENT = ssh-client
 
 SSRCS := server.c \
-       config.c
+	ssh_methods.c \
+	config.c \
 
 CSRCS := client.c \
-       ssh_run.c
+       ssh_methods.c
 
 SOBJS := $(SSRCS:%.c=obj/%.o)
 COBJS := $(CSRCS:%.c=obj/%.o)

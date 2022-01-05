@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "ssh_run.h"
+#include "ssh_methods.h"
 #include "constants.h"
 
 int main(int argc, char** argv){
@@ -12,7 +12,7 @@ int main(int argc, char** argv){
 	session_init(my_ssh_session, HOST, PORT, LOG_LEVEL, CLIENT_TIMEOUT); 
 		
 	// Connect to session
-	int rc = connect_session(my_ssh_session, HOST);
+	int rc = connect_session_client(my_ssh_session, HOST);
 	if(rc != SSH_OK)
 		exit(-1);
 
@@ -24,7 +24,7 @@ int main(int argc, char** argv){
 	
 	// Attempt to create channel
 	ssh_channel my_channel;
-	create_channel(my_ssh_session, &my_channel);
+	create_channel_client(my_ssh_session, &my_channel);
 
 	// Used for input from server
 	char ibuffer[BUFFER_SIZE], obuffer[BUFFER_SIZE];
