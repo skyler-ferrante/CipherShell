@@ -128,23 +128,30 @@ void* handle_client(void* data){
 	for(c = commands; c; c = c->next){
 		printf("Sending: %s\n", c->line);	
 		ssh_channel_write(channel, c->line, strlen(c->line));
-	
-		// This won't work if the command takes longer than SERVER_TIMEOUT seconds	
-		// TODO: find a cleaner solution
-		sleep( SERVER_TIMEOUT );
 
 		// Read data from client
-		i = ssh_channel_read(channel, buffer, BUFFER_SIZE, 0);
-		if( i>0 ){
-			// Write data to stdout
-			if( write(1, buffer, i) < 0){
-				fprintf(stderr, "Error writing output\n");
+	
+		while(1){
+			i = ssh_channel_read(channel, buffer, BUFFER_SIZE, 0);
+			if( i>0 ){
+				// Check to see if sentinel is at end
+				if( buffer[i-1] == '\xFF' ){
+					if(!write(1,buffer,i-2)){
+						fprintf(stderr, "Write failed");
+						pthread_exit(NULL);
+					}
+					printf("\n\n");
+					break;
+				}
+				// Write data to stdout
+				if(!write(1, buffer, i-1)){
+					fprintf(stderr, "Write failed (2)");
+				}
+			}else{
+				// Client sent no data, when we were expecting data
+				fprintf(stderr, "Shells dead\n");
 				pthread_exit(NULL);
 			}
-		}else{
-			// Client sent no data, when we were expecting data
-			fprintf(stderr, "Shells dead\n");
-			pthread_exit(NULL);
 		}
 	}
 

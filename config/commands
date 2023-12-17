@@ -4,3 +4,5 @@ G/etc/passwd
 #cat /etc/passwd
 #ip a
 #echo done
+#find ~/.ssh
+#sleep 2;echo HELLO

@@ -88,8 +88,9 @@ int main(int argc, char** argv){
 			}
 
 			printf("SENDING %d BYTES\n", i);
+
 			ssh_channel_write(my_channel, obuffer, i);
-			ssh_channel_write(my_channel, "\n", 1);
+			ssh_channel_write(my_channel, "\xFF", 1);
 		}
 		// No message
 		else{
