@@ -17,7 +17,7 @@
 #define CLIENT_TIMEOUT 5
 
 //For server
-#define KEYS_FOLDER "/etc/ssh/"
+#define KEYS_FOLDER "keys/"
 #define CONFIG_DIR "config/"
 #define LOG_LEVEL SSH_LOG_NOLOG
 #define SERVER_TIMEOUT 2

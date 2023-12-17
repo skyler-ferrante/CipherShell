@@ -40,7 +40,7 @@ int main(int argc, char** argv){
 	}
 	
 	sshbind = ssh_bind_new();
-	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_RSAKEY, KEYS_FOLDER "ssh_host_rsa_key");	
+	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_RSAKEY, KEYS_FOLDER "sample_key");	
 	ssh_bind_options_set(sshbind, SSH_BIND_OPTIONS_BINDPORT, &port);
 
 	if( ssh_bind_listen(sshbind) < 0 ){

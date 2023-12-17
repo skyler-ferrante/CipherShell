@@ -1,6 +1,6 @@
-Cls -la
-R/etc/passwd
-Cdjakljdklfsjlk
-Ccat /etc/passwd
-Cip a
-Cecho done
+#ls -la
+G/etc/passwd
+#TESTING_FAIL
+#cat /etc/passwd
+#ip a
+#echo done

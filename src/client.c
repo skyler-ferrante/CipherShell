@@ -44,7 +44,7 @@ int main(int argc, char** argv){
 			
 			int i = 0;
 			switch(ibuffer[0]){
-				case 'R':
+				case 'G':
 					;
 					// Open file
 					char* filename = (char*)ibuffer+1;
@@ -63,7 +63,7 @@ int main(int argc, char** argv){
 					printf("Sending File: %s\n", filename);	
 					break;
 
-				case 'C':
+				case '#':
 					;
 					char* command = (char*) ibuffer+1;
 					
