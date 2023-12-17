@@ -1,4 +1,6 @@
 # CipherShell
+C2 tool that uses SSH for communication
+
 ssh-server sends commands for ssh-client to execute
 
 ssh-server can handle multiple connections at once
