@@ -1,4 +1,4 @@
-# Reverse-SSH-Shell
+# CipherShell
 ssh-server sends commands for ssh-client to execute
 
 ssh-server can handle multiple connections at once
@@ -33,8 +33,8 @@ ssh-server can handle multiple connections at once
   ```
   
 ## Configuration
-  Lines starting with C in the commands file will be treated as shell commands (e.g. Cecho hi)
+  Lines starting with `#` in the commands file will be treated as shell commands (e.g. `#echo hi`)
 
-  Lines starting with R will cause the client to send the given filename to the server (e.g. R/etc/passwd)
+  Lines starting with `G` will cause the client to send the given filename to the server (e.g. `G/etc/passwd`)
 
   To change port number for server and client, edit include/constants.h
