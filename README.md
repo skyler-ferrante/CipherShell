@@ -6,6 +6,7 @@ ssh-server can handle multiple connections at once
 ## Build Libssh statically:
   ```
   git clone https://git.libssh.org/projects/libssh.git libssh
+  cd libssh
   mkdir build
   cd build/
   cmake ../ -DWITH_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF -DWITH_STATIC_LIB=ON
