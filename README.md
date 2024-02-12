@@ -1,9 +1,11 @@
 # CipherShell
-C2 tool that uses SSH for communication
+C2 tool that uses SSH for communication. Allows Redteam to easily script attacks against multiple hosts at once.
 
 ssh-server sends commands for ssh-client to execute
 
 ssh-server can handle multiple connections at once
+
+For persistence use crontab/systemd
 
 ## Build Libssh statically:
   ```
